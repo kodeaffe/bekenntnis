@@ -40,6 +40,7 @@ window.addEventListener('load', (event) => {
                 const currentNumber = footerNote.textContent.match(/.+\d/)[0];
                 footerNote.textContent = ` ${parseInt(currentNumber) + 1} gespeicherte Bekenntnisse!`;
                 bekenntnisText.value = '';
+                btnSubmit.removeAttribute('disabled');
             } else {
                 alert('Fehler beim Speichern deines Bekenntnisses. Versuch es später nochmal!');
             }
