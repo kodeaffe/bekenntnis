@@ -3,9 +3,65 @@
     <head>
         <meta charset="utf-8" />
         <title>Bekenntnisse in der Nacht</title>
+        <link rel="stylesheet" href="/static/cirrus.min.css" />
         <link rel="stylesheet" href="/static/styles.css" />
     </head>
     <body>
-      <h1>Flieg 🚀 mich zum Mond 🌙</h1>
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+        <div class="clouds"></div>
+
+        <div class="main">
+            <div class="title">
+                <h1>Bekenntnisse in der Nacht</h1>
+            </div>
+
+            <div class="bekenntnisView">
+                <div class="card">
+                    <div class="content">
+                        <p>
+                            {{ bekenntnis }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeBar">
+                <div class="progress">
+                    <div class="progress-value"></div>
+                </div>
+            </div>
+
+            <div class="addView">
+                <a href="#bekenntnis-modal"><button class="outline btn-primary">Füge deins hinzu</button></a>
+            </div>
+
+            <footer>
+                <p><span>♥️</span> {{ total_bekenntnisse}} Bekentnisse bis jetzt!</p>
+            </footer>
+        </div><!-- main -->
+
+        <div class="modal modal-animated--zoom-in" id="bekenntnis-modal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content bekenntnisAdd" role="document">
+                <div class="modal-header"><a href="#main" class="u-pull-right" aria-label="Close"><span class="xBtn">X</span></a>
+                    <div class="modal-title">Bekenne dich!</p></div>
+                </div>
+                <div class="modal-body">
+                    <textarea id="bekenntnisText" placeholder="Bekenntnis eingeben ..."></textarea>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="form-section u-text-right">
+                        <a href="#main">
+                            <button class="btn btn-small u-inline-block">Abbrechen</button>
+                        </a>
+                        <button class="btn-primary btn btn-small" id="btnSubmit">Senden</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="./static/scripts.js"></script>
     </body>
 </html>

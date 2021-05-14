@@ -1,6 +1,6 @@
 [package]
 name = "bekenntnis"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["kodeaffe <lahi+kodeaffe@posteo.de>"]
 edition = "2018"
 
@@ -12,6 +12,7 @@ failure = {version = "0.1.8", features = ["derive"] }
 diesel = { version = "1.4.5", features = ["postgres"] }
 serde = { version = "1.0.123", features = ["derive"] }
 dotenv = "0.15.0"
+askama = "0.10.5"
 
 [dependencies.rocket_contrib]
 git = "https://github.com/SergioBenitez/Rocket"

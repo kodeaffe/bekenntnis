@@ -6,6 +6,7 @@ mod error;
 mod models;
 mod routes;
 mod schema;
+mod template;
 
 use dbpool::DBPool;
 use dotenv;

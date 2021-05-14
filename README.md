@@ -25,6 +25,7 @@ DATABASE_URL=postgres://bekenntnis:bekenntnis@localhost/bekenntnis
 ## Usage
 
 - Visit the site in your browser at http://localhost:7878 . `7878` means `rust` when typing on the phone.
+- You will be rotated through the existing bekenntnisse, but can also add new ones.
   
 ### API
 

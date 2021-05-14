@@ -1,19 +1,42 @@
+use std::path::PathBuf;
+
+use diesel::pg::PgConnection;
+use diesel::query_dsl::{QueryDsl, RunQueryDsl};
+use rocket_contrib::json::Json;
+use rocket::response::content;
+use rocket::response::status::{Created, NotFound};
+use rocket::response::NamedFile;
+
 use crate::dbpool::DBPool;
 use crate::error::CustomError;
 use crate::models::{Bekenntnis, InsertBekenntnis};
 use crate::schema;
-use diesel::query_dsl::{QueryDsl, RunQueryDsl};
-use rocket_contrib::json::Json;
-use rocket::response::status::{Created, NotFound};
-use rocket::response::NamedFile;
-use std::path::PathBuf;
+use crate::template::Home;
+
+
+// No random ordering within diesel?
+no_arg_sql_function!(RANDOM, (), "Represents the sql RANDOM() function");
+
+fn get_random_bekenntnis(conn: &PgConnection) -> Result<Bekenntnis, diesel::result::Error> {
+    schema::bekenntnis::table
+        .order(RANDOM)
+        .limit(1)
+        .first::<Bekenntnis>(conn)
+}
 
 
 #[get("/")]
-pub async fn home() -> Result<NamedFile, NotFound<String>> {
-    NamedFile::open("templates/home.html")
-        .await
-        .map_err(|e| NotFound(e.to_string()))
+pub async fn home(conn: DBPool) -> Result<content::Html<String>, CustomError> {
+    let bekenntnis: Bekenntnis = conn.run(|c| get_random_bekenntnis(c)).await?;
+    let total_bekenntnisse: i64 = conn.run(|c| {
+        schema::bekenntnis::table.count().get_result(c)
+    }).await?;
+    let template = Home {
+        bekenntnis: bekenntnis.content,
+        total_bekenntnisse,
+    };
+    let response = content::Html(template.to_string());
+    Ok(response)
 }
 
 
@@ -39,18 +62,9 @@ pub async fn post_bekenntnis(
     Ok(Created::new("/bekenntnis").body(Json(bekenntnis)))
 }
 
-// No random ordering within diesel?
-no_arg_sql_function!(RANDOM, (), "Represents the sql RANDOM() function");
 
 #[get("/bekenntnis", format = "json")]
 pub async fn get_bekenntnis(conn: DBPool) -> Result<Json<Bekenntnis>, CustomError> {
-    let bekenntnis: Bekenntnis = conn
-        .run(|c| {
-            schema::bekenntnis::table
-                .order(RANDOM)
-                .limit(1)
-                .first::<Bekenntnis>(c)
-        })
-        .await?;
+    let bekenntnis: Bekenntnis = conn.run(|c| get_random_bekenntnis(c)).await?;
     Ok(Json(bekenntnis))
 }
