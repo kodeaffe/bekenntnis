@@ -1,9 +1,6 @@
-// FIXME: Port disregards Rocket.toml!
-const BASE_URL = 'http://localhost:7878';
-
 async function refreshCard(cardContent, progressBar) {
     try {
-        const resp = await fetch(`${BASE_URL}/api/bekenntnis`, {
+        const resp = await fetch(`/api/bekenntnis`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -31,7 +28,7 @@ window.addEventListener('load', (event) => {
             bekenntnisText.classList.add('emptyArea');
         } else {
             btnSubmit.setAttribute('disabled', 'disabled');
-            const resp = await fetch(`${BASE_URL}/api/bekenntnis`, {
+            const resp = await fetch(`/api/bekenntnis`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
